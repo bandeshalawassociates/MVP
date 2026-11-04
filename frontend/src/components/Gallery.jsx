@@ -5,8 +5,17 @@ import { FiDelete, FiEdit2, FiExternalLink } from 'react-icons/fi';
 function Gallery({ assets, onDeleteAsset, onSelectAsset, selectedAsset }) {
   const [hoveredId, setHoveredId] = useState(null);
 
-  const generateResponsiveUrl = (publicId, width) => {
-    return `https://res.cloudinary.com/sarg5qfy/image/upload/w_${width},c_fill,q_auto,f_auto/gallery/${publicId}`;
+  const generateResponsiveUrl = (asset, width) => {
+    const sourceUrl = asset.secure_url || asset.url;
+
+    if (!sourceUrl) {
+      return '';
+    }
+
+    return sourceUrl.replace(
+      '/upload/',
+      `/upload/w_${width},h_${width},c_fill,q_auto,f_auto/`,
+    );
   };
 
   return (
@@ -21,7 +30,7 @@ function Gallery({ assets, onDeleteAsset, onSelectAsset, selectedAsset }) {
           >
             <div className="gallery-image-wrapper">
               <img
-                src={generateResponsiveUrl(asset.public_id, 300)}
+                src={generateResponsiveUrl(asset, 300)}
                 alt={asset.public_id}
                 onClick={() => onSelectAsset(asset)}
                 loading="lazy"

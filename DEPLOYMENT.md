@@ -4,9 +4,28 @@ Deploy your Cloudinary Media Gallery to production!
 
 ---
 
-## 🚀 Deployment Options
+## 🚀 Vercel Deployment (Recommended)
 
-### Option 1: Vercel (Frontend) + Heroku (Backend) - **Recommended**
+Deploy the repository root as one Vercel project. Vercel detects `server.js` as the Express application and serves the Vite bundle generated in `public/`.
+
+1. Import `bandeshalawassociates/MVP` in Vercel.
+2. Keep the **Root Directory** set to the repository root (`.`).
+3. Keep the standard commands:
+   - Install: `npm install`
+   - Build: `npm run build`
+4. Add these server-side environment variables in **Project Settings → Environment Variables**:
+   - `CLOUDINARY_CLOUD_NAME`
+   - `CLOUDINARY_API_KEY`
+   - `CLOUDINARY_API_SECRET`
+5. Redeploy. Do not prefix the API secret with `VITE_`; Vite exposes such variables to browsers.
+
+The root npm workspace installs both backend and frontend dependencies. The frontend uses same-origin `/api` requests, so the Express routes and static application share one deployment.
+
+---
+
+## Alternative Deployment Options
+
+### Option 1: Vercel (Frontend) + Heroku (Backend)
 
 #### Deploy Backend to Heroku
 

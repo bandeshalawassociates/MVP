@@ -59,7 +59,7 @@ function App() {
     }
 
     try {
-      const response = await fetch(`/api/assets/${publicId}`, {
+      const response = await fetch(`/api/assets/${encodeURIComponent(publicId)}`, {
         method: 'DELETE',
       });
 

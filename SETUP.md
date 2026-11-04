@@ -16,19 +16,14 @@
 cd "Cloudinary Projects/bla"
 ```
 
-### 2. Install Backend Dependencies
+### 2. Install Dependencies
+The repository uses npm workspaces, so one root install includes the backend and frontend packages:
+
 ```bash
 npm install
 ```
 
-### 3. Install Frontend Dependencies
-```bash
-cd frontend
-npm install
-cd ..
-```
-
-### 4. Environment Configuration
+### 3. Environment Configuration
 The `.env` file is already configured with your Cloudinary credentials:
 ```env
 CLOUDINARY_CLOUD_NAME=sarg5qfy

@@ -23,7 +23,7 @@ function TransformationPreview({ asset }) {
       params.push(`c_${transformations.crop}`);
     }
 
-    if (transformations.gravity !== 'auto') {
+    if (transformations.gravity !== 'none') {
       params.push(`g_${transformations.gravity}`);
     }
 
@@ -31,7 +31,7 @@ function TransformationPreview({ asset }) {
       params.push(`q_${transformations.quality}`);
     }
 
-    if (transformations.fetch_format !== 'auto') {
+    if (transformations.fetch_format !== 'none') {
       params.push(`f_${transformations.fetch_format}`);
     }
 
@@ -47,10 +47,14 @@ function TransformationPreview({ asset }) {
       params.push(`o_${transformations.opacity}`);
     }
 
-    const baseUrl = `https://res.cloudinary.com/sarg5qfy/image/upload`;
+    const sourceUrl = asset.secure_url || asset.url;
     const transformString = params.join(',');
 
-    return `${baseUrl}/${transformString}/gallery/${asset.public_id}`;
+    if (!sourceUrl) {
+      return '';
+    }
+
+    return sourceUrl.replace('/upload/', `/upload/${transformString}/`);
   };
 
   const handleChange = (e) => {

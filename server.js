@@ -36,6 +36,9 @@ const storage = new CloudinaryStorage({
 
 const upload = multer({ storage });
 
+const getGalleryPublicId = (publicId) =>
+  publicId.startsWith('gallery/') ? publicId : `gallery/${publicId}`;
+
 // ==================== Routes ====================
 
 // Health Check
@@ -121,7 +124,7 @@ app.get('/api/assets/:publicId', async (req, res) => {
   try {
     const { publicId } = req.params;
     
-    const result = await cloudinary.api.resource(`gallery/${publicId}`, {
+    const result = await cloudinary.api.resource(getGalleryPublicId(publicId), {
       resource_type: 'image',
     });
 
@@ -136,7 +139,7 @@ app.delete('/api/assets/:publicId', async (req, res) => {
   try {
     const { publicId } = req.params;
 
-    await cloudinary.uploader.destroy(`gallery/${publicId}`);
+    await cloudinary.uploader.destroy(getGalleryPublicId(publicId));
 
     res.json({
       success: true,
@@ -160,7 +163,7 @@ app.post('/api/transform', (req, res) => {
         .json({ error: 'Missing publicId or transformations' });
     }
 
-    const url = cloudinary.url(`gallery/${publicId}`, transformations);
+    const url = cloudinary.url(getGalleryPublicId(publicId), transformations);
 
     res.json({
       success: true,
@@ -182,14 +185,14 @@ app.post('/api/analyze', async (req, res) => {
       return res.status(400).json({ error: 'Missing publicId' });
     }
 
-    const imageUrl = cloudinary.url(`gallery/${publicId}`);
+    const imageUrl = cloudinary.url(getGalleryPublicId(publicId));
 
     let result = {};
 
     // Auto-tagging
     if (analysisType === 'tagging' || analysisType === 'all') {
       try {
-        const tagResult = await cloudinary.api.resource(`gallery/${publicId}`, {
+        const tagResult = await cloudinary.api.resource(getGalleryPublicId(publicId), {
           resource_type: 'image',
           custom_coordinates: true,
         });
@@ -201,7 +204,7 @@ app.post('/api/analyze', async (req, res) => {
 
     // Get image metadata for analysis
     try {
-      const metadata = await cloudinary.api.resource(`gallery/${publicId}`, {
+      const metadata = await cloudinary.api.resource(getGalleryPublicId(publicId), {
         resource_type: 'image',
       });
       result.metadata = metadata;
@@ -232,7 +235,7 @@ app.post('/api/responsive-url', (req, res) => {
 
     const srcSet = breakpoints
       .map((width) => {
-        const url = cloudinary.url(`gallery/${publicId}`, {
+        const url = cloudinary.url(getGalleryPublicId(publicId), {
           width,
           crop: 'fill',
           quality: 'auto',

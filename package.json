@@ -1,16 +1,20 @@
 {
   "name": "cloudframe-media-platform",
   "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "frontend"
+  ],
   "description": "Professional media management platform with AI-powered asset optimization",
   "type": "module",
   "main": "server.js",
   "scripts": {
     "dev": "npm run dev:backend",
     "dev:backend": "node --watch server.js",
-    "dev:frontend": "cd frontend && npm run dev",
-    "build": "cd frontend && npm run build",
+    "dev:frontend": "npm --workspace frontend run dev",
+    "build": "npm --workspace frontend run build",
     "start": "node server.js",
-    "install:all": "npm install && cd frontend && npm install"
+    "install:all": "npm install"
   },
   "keywords": [
     "cloudinary",
